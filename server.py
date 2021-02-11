@@ -15,7 +15,7 @@ server.bind(address)##now we just bind the socket with the address now that mean
 def handleIndividualClientsConnections(sockets, address):
     print(f"[New Connection] {address} is Connected.")
     while True:
-        msgLenght=socket.recv(HEADER).decode('utf-8')
+        msgLenght=sockets.recv(HEADER).decode('utf-8')
         msgLenght=int(msgLenght)
         msg=sockets.recv(msgLenght).decode('utf-8')
         print(f"[{address}] {msg}")
