@@ -1,6 +1,6 @@
 import threading 
 import socket
-
+import pickle
 
 HEADER=64#used to get data from the clients
 #typical most used port
@@ -15,14 +15,16 @@ server.bind(address)##now we just bind the socket with the address now that mean
 def handleIndividualClientsConnections(sockets, address):
     print(f"[New Connection] {address} is Connected.")
     while True:
+    
         msgLenght=sockets.recv(HEADER).decode('utf-8')
-        msgLenght=int(msgLenght)
-        msg=sockets.recv(msgLenght).decode('utf-8')
-        print(f"[{address}] {msg}")
-        #we need to check at each time if the client wanted to disconnect
-        if(msg == DISCONNECT_MSG):
-            break;
-        print(f"[{address}] {msg}")
+        if(msgLenght):##is not NULL or NONE has smth inside it so that we can convert it
+            msgLenght=int(msgLenght)
+            msg=sockets.recv(msgLenght).decode('utf-8')
+            print(f"[{address}] {msg}")
+            #we need to check at each time if the client wanted to disconnect
+            if(msg == DISCONNECT_MSG):
+                break;
+            print(f"[{address}] {msg}")
     sockets.close() #disconnect
 
 def disturbuteConnections():
@@ -30,7 +32,7 @@ def disturbuteConnections():
     print(f"[Listening] on {Server}")
     while True:#Just basicly saying we wanna keep listening
         Socket, address =server.accept()#What port and ip address is connected to the server going to be returned to address
-        thread=threading.Thread(target=handleIndividualClientsConnections,args=(socket,address))
+        thread=threading.Thread(target=handleIndividualClientsConnections,args=(Socket,address))
         thread.start()
         print(f"[Current Connections] {threading.activeCount() -1 }")#the minus one is just to not count the distrubte connection one the server launches
 print("The Server is Launching in 1...2...3....  .....xD :")
