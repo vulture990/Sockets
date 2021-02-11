@@ -33,5 +33,5 @@ def disturbuteConnections():
         thread=threading.Thread(target=handleIndividualClientsConnections,args=(socket,address))
         thread.start()
         print(f"[Current Connections] {threading.activeCount() -1 }")#the minus one is just to not count the distrubte connection one the server launches
-print("The Server is Launching in 1...2...3....  .....xD:")
+print("The Server is Launching in 1...2...3....  .....xD :")
 disturbuteConnections();
