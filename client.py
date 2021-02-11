@@ -1,5 +1,6 @@
 import socket 
-
+import pickle
+BIGNUMBER=3000
 HEADER=64#used to get data from the clients
 #typical most used port
 Port=5050
@@ -8,7 +9,7 @@ address = (Server, Port)
 DISCONNECT_MSG="Disconnect"
 client=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 client.connect(address)
-
+#sendMsg sends data from client to server
 def sendMsg(msg):
     message=msg.encode('utf-8')#encode the string into bytes to sent it as socket
     msgLen=len(message)
@@ -16,5 +17,6 @@ def sendMsg(msg):
     sendLen+=b' ' * (HEADER - len(sendLen))
     client.send(sendLen)
     client.send(message)
-
-sendMsg("Im CLIENT")
+    client.send(DISCONNECT_MSG)
+    print(client.recv(BIGNUMBER).decode('utf-8'))
+sendMsg("Im CLIENT,i just got connected")
